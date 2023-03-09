@@ -1,10 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% load static %}
 
-</body>
-</html>
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+<style>
+.card {
+box-sizing: border-box;
+
+position: absolute;
+width: 60%;
+height: 445px;
+left: 20%;
+top: 20%;
+
+background: #FFFFFF;
+border: 1px solid #E5E5E5;
+border-radius: 4px;
+}
+
+h2 {
+position: absolute;
+width: 86px;
+height: 79px;
+left: 47%;
+top: 5%;
+
+font-family: 'Helvetica Neue';
+font-style: normal;
+font-weight: 300;
+font-size: 36px;
+line-height: 79px;
+/* identical to box height, or 219% */
+
+display: flex;
+align-items: flex-end;
+
+color: #373A3C;
+}
+
+.submit {
+box-sizing: border-box;
+
+position: absolute;
+width: 85px;
+height: 38px;
+left: 57.6%;
+top: 63%;
+
+background: #0275D8;
+border: 1px solid #0275D8;
+border-radius: 4px;
+}
+</style>
+
+<div class="card">
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+            {{ form.as_p }}
+        <button class="submit" type="submit">Login</button>
+    </form>
+</div>
