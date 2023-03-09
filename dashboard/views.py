@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
@@ -14,3 +16,12 @@ class DashboardView(TemplateView):
             'user_name': username
         }
         return context
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+
+class CreateSchemaView(TemplateView):
+    template_name = 'dashboard-create.html'

@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ user_name }}</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
 
-</body>
-</html>
+
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="container" style="margin-top: 25px; margin-left:5%;">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="title">Data schemas</div>
+        </div>
+        <div class="col-md-2">
+            <a type="button" class="btn btn-success" href="{% url 'create' user_name %}">New schema</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
