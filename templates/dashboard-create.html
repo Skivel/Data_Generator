@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block content %}
-<form method="post" id="my-form">
+<form method="post" id="my-form" style="margin-top: 25px;">
     {% csrf_token %}
-    <div class="container" style="margin-top: 25px; margin-left:5%;">
+    <div class="container">
         <div class="row">
             <div class="col-md-7">
                 <div class="title">New schema</div>
@@ -18,14 +18,15 @@
             </div>
         </div>
     </div>
-
-    <label for="name">Name:</label>
-    <input type="text" name="name" id="name">
-    <div class="title">Fields</div>
-    <div id="fields-container">
-        <!-- Dynamic fields will be added here -->
+    <div class="container" style="padding-left: 16px;">
+        <label for="name" class="label">Name</label><br>
+        <input type="text" name="name" id="name">
+        <div class="title" style="padding:15px;">Fields</div>
+        <div id="fields-container" class="form-row">
+            <!-- Dynamic fields will be added here -->
+        </div>
+        <button type="button" class="btn btn-primary" id="add-field">Add Field</button>
     </div>
-    <button type="button" class="btn btn-primary" id="add-field">Add Field</button>
 </form>
 
 <script>
@@ -35,46 +36,88 @@ function addField() {
   tagId++;
   var container = document.getElementById("fields-container");
 
+  // Create row div for fields
+  var container_item_1 = document.createElement("div");
+  container_item_1.id = "item-1-" + tagId;
+  container_item_1.className = "form-group col-md-6";
+  container.appendChild(container_item_1);
+
+  var container_item_2 = document.createElement("div");
+  container_item_2.id = "item-2-" + tagId;
+  container_item_2.className = "form-group col-md-4";
+  container.appendChild(container_item_2);
+
+  // Create label for field
+  var label1 = document.createElement("label");
+  label1.setAttribute("for", "inputName");
+  label1.id = "label-1-" + tagId;
+  label1.innerHTML = "Column name";
+  container_item_1.appendChild(label1);
+
   // Create input field
   var input = document.createElement("input");
   input.id = "tag-" + tagId;
   input.type = "text";
   input.className = "form-control";
-  input.style = "width: 150px;";
-  input.name = "dynamic-key"; // Use brackets to make it an array
-  input.placeholder = "Field Name";
-  container.appendChild(input);
+  input.style.width = "150px";
+  input.setAttribute("name", "dynamic-key[]");
+  container_item_1.appendChild(input);
 
-  // Create select field
+  // Create label for selection field
+  var label2 = document.createElement("label");
+  label2.setAttribute("for", "inputType");
+  label2.id = "label-2-" + tagId;
+  label2.innerHTML = "Type";
+  container_item_2.appendChild(label2);
+
+  var br = document.createElement("br");
+
+  container_item_2.appendChild(br);
+
+  // Create selection field
   var select = document.createElement("select");
   select.className = "custom-select mr-sm-2";
   select.id = "select-" + tagId;
-  select.style = "width: 150px;";
-  select.name = "dynamic-value";
-  container.appendChild(select);
+  select.style.width = "150px";
+  select.setAttribute("name", "dynamic-value[]");
+  container_item_2.appendChild(select);
 
   // Add default option to select field
   var option = document.createElement("option");
-  option.value = "";
-  option.disabled = true;
+  option.value = "string";
+  option.disabled = false;
   option.selected = true;
-  option.label = "Select Field Type";
+  option.label = "String";
   select.appendChild(option);
 
   // Add other options to select field
   var option1 = document.createElement("option");
-  option1.value = "1";
-  option1.innerHTML = "value1"
+  option1.value = "integer";
+  option1.innerHTML = "Integer";
   select.appendChild(option1);
+
+  var option2 = document.createElement("option");
+  option2.value = "float";
+  option2.innerHTML = "Float";
+  select.appendChild(option2);
+
+  var option3 = document.createElement("option");
+  option3.value = "bool";
+  option3.innerHTML = "Boolean";
+  select.appendChild(option3);
+
+  var option4 = document.createElement("option");
+  option4.value = "date";
+  option4.innerHTML = "Date";
+  select.appendChild(option4);
 
   // Create delete button
   var deleteBTN = document.createElement("a");
   deleteBTN.style.color = "red";
   deleteBTN.id = "delete-" + tagId;
   deleteBTN.innerHTML = "Delete";
-  var currentId = tagId;
   deleteBTN.addEventListener("click", function() {
-    delField(currentId);
+    delField(tagId);
   });
   container.appendChild(deleteBTN);
 
@@ -95,6 +138,8 @@ function delField(id) {
 }
 
 document.getElementById("add-field").addEventListener("click", addField);
+
+
 
 
 </script>

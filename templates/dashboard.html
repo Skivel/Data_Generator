@@ -31,24 +31,14 @@
                 </tr>
                 </thead>
                 <tbody>
+                {% for el in data %}
                 <tr>
-                    <th scope="row">1</th>
-                    <td><a href="" style="color:light-blue;">Mark</a></td>
-                    <td>Otto</td>
-                    <td style="width:25%;"><a href="" style="color:light-blue;">Edit scheme</a><a href="" style="color:red; padding-left:15px;">Delete</a></td>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td><a href="" style="color:light-blue;">{{ el.title }}</a></td>
+                    <td>{{ el.data_update }}</td>
+                    <td style="width:25%;"><a href="" style="color:light-blue;">Edit scheme</a><a href="{% url 'delete' user_name el.id %}" style="color:red; padding-left:15px;">Delete</a></td>
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td><a href="" style="color:light-blue;">Jacob</a></td>
-                    <td>Thornton</td>
-                    <td><a href="" style="color:light-blue;">Edit scheme</a><a href="" style="color:red; padding-left:15px;">Delete</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td><a href="" style="color:light-blue;">Jacob</a></td>
-                    <td>Thornton</td>
-                    <td><a href="" style="color:light-blue;">Edit scheme</a><a href="" style="color:red; padding-left:15px;">Delete</a></td>
-                </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>

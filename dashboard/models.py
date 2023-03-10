@@ -11,4 +11,4 @@ class Schemas(models.Model):
     data_update = models.DateField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.title

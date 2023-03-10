@@ -11,3 +11,15 @@ align-items: flex-end;
 
 color: #373A3C;
 }
+
+.label {
+
+font-family: 'Helvetica Neue';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #373A3C;
+}
