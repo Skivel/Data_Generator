@@ -4,6 +4,9 @@ from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
+from django.shortcuts import render
+from .models import Schemas
+
 
 @method_decorator(login_required, name='dispatch')
 class DashboardView(TemplateView):
@@ -25,3 +28,21 @@ def logout_view(request):
 
 class CreateSchemaView(TemplateView):
     template_name = 'dashboard-create.html'
+
+
+
+def my_view(request, *args, **kwargs):
+    user = request.user
+    if request.method == 'POST':
+        name = request.POST['name']
+        keys = request.POST.getlist('dynamic-key')
+        values = request.POST.getlist('dynamic-value')
+        JSON_result = {keys[i]: values[i] for i in range(len(keys))}
+        print(JSON_result)
+
+        model = Schemas(user_id=user.id, user_name=user, title=name, fields=JSON_result)
+        model.save()
+        return render(request, 'dashboard.html', {'user_name': user})
+    else:
+        return render(request, 'dashboard-create.html', {'user_name': user})
+
