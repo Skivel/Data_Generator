@@ -25,7 +25,18 @@
     </div>
     <div class="container" style="padding-left: 16px;">
         <label for="name" class="label">Name</label><br>
-        <input type="text" name="name" id="name" value="{{ schema.title }}">
+        <input type="text" name="name" id="name" class="form-control" style="width:200px"
+               value="{{ schema.title }}"><br>
+        <label for="name" class="label">Column separator</label><br>
+        <select name="separators" id="separators" class="custom-select" style="width:200px">
+            <option value="comma" label='Comma (,)'></option>
+            <option value="dot-comma">Dot&comma (;)</option>
+        </select><br><br>
+        <label for="name" class="label">String character</label><br>
+        <select name="character" id="character" class="custom-select" style="width:200px">
+            <option value="double-quote" label='Double-quote (")'></option>
+            <option value="quote">Quote (')</option>
+        </select><br><br>
         <div class="title" style="padding:15px;">Fields</div>
         <div id="fields-container" class="form-row">
             <!-- Dynamic fields will be added here -->
@@ -37,76 +48,83 @@
 <script>
 var my_keys = JSON.parse('{{ data_keys|safe }}');
 var my_values = JSON.parse('{{ data_values|safe }}');
+var tagId = 0;
+
+console.log(my_values[0][1]);
 
 for (var i = 0; i < my_keys.length; i++) {
-    console.log(my_keys[i]);
-    console.log(typeof my_values[i])
+    fields(i);
+}
 
-    var container = document.getElementById("fields-container");
+function fields(i) {
+  tagId++;
+  var currentId = tagId;
 
-    // Create row div for fields
-    var container_item_1 = document.createElement("div");
-    container_item_1.id = "item-1-" + i;
-    container_item_1.className = "form-group col-md-4";
-    container.appendChild(container_item_1);
+  var container = document.getElementById("fields-container");
 
-    var container_item_2 = document.createElement("div");
-    container_item_2.id = "item-2-" + i;
-    container_item_2.className = "form-group col-md-2";
-    container.appendChild(container_item_2);
+  // Create row div for fields
+  var container_item_1 = document.createElement("div");
+  container_item_1.id = "item-1-" + tagId;
+  container_item_1.className = "form-group col-md-4";
+  container.appendChild(container_item_1);
 
-    var container_item_3_1 = document.createElement("div");
-    container_item_3_1.id = "item-3-1-" + i;
-    container_item_3_1.className = "form-group col-md-1";
-    container.appendChild(container_item_3_1);
+  var container_item_2 = document.createElement("div");
+  container_item_2.id = "item-2-" + tagId;
+  container_item_2.className = "form-group col-md-2";
+  container.appendChild(container_item_2);
 
-    var container_item_3_2 = document.createElement("div");
-    container_item_3_2.id = "item-3-2-" + i;
-    container_item_3_2.className = "form-group col-md-2";
-    container.appendChild(container_item_3_2);
+  var container_item_3_1 = document.createElement("div");
+  container_item_3_1.id = "item-3-1-" + tagId;
+  container_item_3_1.className = "form-group col-md-1";
+  container.appendChild(container_item_3_1);
 
-    var container_item_4 = document.createElement("div");
-    container_item_4.id = "item-4-" + i;
-    container_item_4.className = "form-group col-md-3";
-    container.appendChild(container_item_4);
+  var container_item_3_2 = document.createElement("div");
+  container_item_3_2.id = "item-3-2-" + tagId;
+  container_item_3_2.className = "form-group col-md-2";
+  container.appendChild(container_item_3_2);
 
-    // Create label for field
-    var label1 = document.createElement("label");
-    label1.setAttribute("for", "inputName");
-    label1.id = "label-1-" + i;
-    label1.innerHTML = "Column name";
-    container_item_1.appendChild(label1);
+  var container_item_4 = document.createElement("div");
+  container_item_4.id = "item-4-" + tagId;
+  container_item_4.className = "form-group col-md-3";
+  container.appendChild(container_item_4);
 
-    // Create input field
-    var input = document.createElement("input");
-    input.id = "tag-" + i;
-    input.type = "text";
-    input.value = my_keys[i];
-    input.className = "form-control";
-    input.style.width = "250px";
-    input.setAttribute("name", "dynamic-key[]");
-    container_item_1.appendChild(input);
+  // Create label for field
+  var label1 = document.createElement("label");
+  label1.setAttribute("for", "inputName");
+  label1.id = "label-1-" + tagId;
+  label1.innerHTML = "Column name";
+  container_item_1.appendChild(label1);
 
-    // Create label for selection field
-    var label2 = document.createElement("label");
-    label2.setAttribute("for", "inputType");
-    label2.id = "label-2-" + i;
-    label2.innerHTML = "Type";
-    container_item_2.appendChild(label2);
+  // Create input field
+  var input = document.createElement("input");
+  input.id = "tag-" + tagId;
+  input.type = "text";
+  input.value = my_keys[i];
+  input.className = "form-control";
+  input.style.width = "250px";
+  input.setAttribute("name", "dynamic-key[]");
+  container_item_1.appendChild(input);
 
-    var br = document.createElement("br");
-    br.id = "br-l-" + i;
-    container_item_2.appendChild(br);
+  // Create label for selection field
+  var label2 = document.createElement("label");
+  label2.setAttribute("for", "inputType");
+  label2.id = "label-2-" + tagId;
+  label2.innerHTML = "Type";
+  container_item_2.appendChild(label2);
 
-    // Create selection field
-    var select = document.createElement("select");
-    select.className = "custom-select mr-sm-2";
-    select.id = "select-" + i;
-    select.style.width = "150px";
-    select.setAttribute("name", "dynamic-value[]");
-    container_item_2.appendChild(select);
+  var br = document.createElement("br");
+  br.id = "br-l-" + tagId;
+  container_item_2.appendChild(br);
 
-    if (my_values[i] == 'string') {
+  // Create selection field
+  var select = document.createElement("select");
+  select.className = "custom-select mr-sm-2";
+  select.id = "select-" + tagId;
+  select.style.width = "150px";
+  select.setAttribute("name", "dynamic-value[]");
+  container_item_2.appendChild(select);
+
+  if (my_values[i] == 'string') {
         // Add default option to select field
         var option = document.createElement("option");
         option.value = "string";
@@ -135,19 +153,9 @@ for (var i = 0; i < my_keys.length; i++) {
         option4.value = "date";
         option4.innerHTML = "Date";
         select.appendChild(option4);
+  }
 
-        // Add event listener to select field
-        select.addEventListener("change", function() {
-        if (this.value === "integer") {
-            thisInt(i);
-        }
-        else {
-            itsNotInt(i);
-        }
-        });
-    }
-
-    if (typeof my_values[i] == 'object') {
+  else if (typeof my_values[i] == 'object') {
         // Add default option to select field
         var option = document.createElement("option");
         option.value = "integer";
@@ -177,47 +185,39 @@ for (var i = 0; i < my_keys.length; i++) {
         option4.innerHTML = "Date";
         select.appendChild(option4);
 
-        // Add event listener to select field
-        select.addEventListener("change", function() {
-        if (this.value === "integer") {
-            thisInt(i);
-        }
-        else {
-            itsNotInt(i);
-        }
-        });
-
-        var container_item_3_1 = document.getElementById("item-3-1-" + i);
+        var container_item_3_1 = document.getElementById("item-3-1-" + tagId);
         var label3 = document.createElement("label");
-        label3.id = "int-1-" + i;
+        label3.id = "int-1-" + tagId;
         label3.innerHTML = "From";
         container_item_3_1.appendChild(label3);
 
         var input = document.createElement("input");
-        input.id = "int-field-1-" + i;
+        input.id = "int-field-1-" + tagId;
         input.type = "number";
+        input.value = my_values[i][0];
         input.className = "form-control";
         input.style.width = "70px";
         input.setAttribute("name", "integer-value[]");
         container_item_3_1.appendChild(input);
 
-        var container_item_3_2 = document.getElementById("item-3-2-" + i);
+        var container_item_3_2 = document.getElementById("item-3-2-" + tagId);
 
         var label4 = document.createElement("label");
-        label4.id = "int-2-" + i;
+        label4.id = "int-2-" + tagId;
         label4.innerHTML = "To";
         container_item_3_2.appendChild(label4);
 
         var input1 = document.createElement("input");
-        input1.id = "int-field-2-" + i;
+        input1.id = "int-field-2-" + tagId;
         input1.type = "number";
+        input.value = my_values[i][1];
         input1.className = "form-control";
         input1.style.width = "70px";
         input1.setAttribute("name", "integer-value[]");
         container_item_3_2.appendChild(input1);
-    }
+  }
 
-    if (my_values[i] == 'float') {
+  else if (my_values[i] == 'float') {
         // Add default option to select field
         var option = document.createElement("option");
         option.value = "float";
@@ -246,19 +246,9 @@ for (var i = 0; i < my_keys.length; i++) {
         option4.value = "date";
         option4.innerHTML = "Date";
         select.appendChild(option4);
+  }
 
-        // Add event listener to select field
-        select.addEventListener("change", function() {
-        if (this.value === "integer") {
-            thisInt(i);
-        }
-        else {
-            itsNotInt(i);
-        }
-        });
-    }
-
-    if (my_values[i] == 'bool') {
+  else if (my_values[i] == 'bool') {
         // Add default option to select field
         var option = document.createElement("option");
         option.value = "bool";
@@ -287,19 +277,9 @@ for (var i = 0; i < my_keys.length; i++) {
         option4.value = "date";
         option4.innerHTML = "Date";
         select.appendChild(option4);
-
-        // Add event listener to select field
-        select.addEventListener("change", function() {
-        if (this.value === "integer") {
-            thisInt(i);
-        }
-        else {
-            itsNotInt(i);
-        }
-        });
     }
 
-    if (my_values[i] == 'date') {
+  else {
         // Add default option to select field
         var option = document.createElement("option");
         option.value = "date";
@@ -328,39 +308,36 @@ for (var i = 0; i < my_keys.length; i++) {
         option4.value = "string";
         option4.innerHTML = "string";
         select.appendChild(option4);
+  }
 
-        // Add event listener to select field
-        select.addEventListener("change", function() {
-        if (this.value === "integer") {
-            thisInt(i);
-        }
-        else {
-            itsNotInt(i);
-        }
-        });
+  // Add event listener to select field
+  select.addEventListener("change", function() {
+    if (this.value === "integer") {
+        thisInt(currentId);
     }
+    else {
+        itsNotInt(currentId);
+    }
+  });
 
-    // Create delete button
-    var br = document.createElement("br");
+  // Create delete button
+  var br = document.createElement("br");
+  br.id = "br-del-" + tagId;
+  container_item_4.appendChild(br);
 
-    br.id = "br-del-" + i;
-    container_item_4.appendChild(br);
 
+  var deleteBTN = document.createElement("a");
+  deleteBTN.style.color = "red";
+  deleteBTN.id = "delete-" + tagId;
+  deleteBTN.innerHTML = "Delete";
+  deleteBTN.addEventListener("click", function() {
+    delField(currentId);
+  });
+  container_item_4.appendChild(deleteBTN);
 
-    var deleteBTN = document.createElement("a");
-    deleteBTN.style.color = "red";
-    deleteBTN.id = "delete-" + i;
-    deleteBTN.innerHTML = "Delete";
-    deleteBTN.addEventListener("click", function() {
-      delField(i);
-    });
-    container_item_4.appendChild(deleteBTN);
-
-    var br = document.createElement("br");
-    br.id = "br-" + i;
-    container.appendChild(br);
-
-    var tagId = i;
+  var br = document.createElement("br");
+  br.id = "br-" + tagId;
+  container.appendChild(br);
 }
 
 function addField() {

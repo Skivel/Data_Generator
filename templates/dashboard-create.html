@@ -20,7 +20,17 @@
     </div>
     <div class="container" style="padding-left: 16px;">
         <label for="name" class="label">Name</label><br>
-        <input type="text" name="name" id="name">
+        <input type="text" name="name" id="name" class="form-control" style="width:200px"><br>
+        <label for="name" class="label">Column separator</label><br>
+        <select name="separators" id="separators" class="custom-select" style="width:200px">
+            <option value = "comma" label='Comma (,)'></option>
+            <option value = "dot-comma">Dot&comma (;)</option>
+        </select><br><br>
+        <label for="name" class="label">String character</label><br>
+        <select name="character" id="character" class="custom-select" style="width:200px">
+            <option value = "double-quote" label='Double-quote (")'></option>
+            <option value = "quote">Quote (')</option>
+        </select><br><br>
         <div class="title" style="padding:15px;">Fields</div>
         <div id="fields-container" class="form-row">
             <!-- Dynamic fields will be added here -->

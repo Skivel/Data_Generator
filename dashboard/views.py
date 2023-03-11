@@ -29,6 +29,8 @@ class CreateSchemaView(TemplateView):
     def post(self, request, *args, **kwargs):
         user = request.user
         name = request.POST['name']
+        separators = request.POST['separators']
+        character = request.POST['character']
         keys = request.POST.getlist('dynamic-key[]')
         values = request.POST.getlist('dynamic-value[]')
         integer_values = request.POST.getlist('integer-value[]')
@@ -40,7 +42,7 @@ class CreateSchemaView(TemplateView):
                 JSON_result.update({keys[i]: values[i]})
         print(JSON_result)
 
-        model = Schemas(user_id=user.id, user_name=user, title=name, fields=JSON_result)
+        model = Schemas(user_id=user.id, user_name=user, title=name, separators=separators, character=character, fields=JSON_result)
         model.save()
         return redirect("home", user)
 
