@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
+import json
 
-from django.shortcuts import render
 from .models import Schemas
 
 
@@ -23,25 +23,15 @@ class DashboardView(TemplateView):
         return context
 
 
-def logout_view(request):
-    logout(request)
-    return redirect('login')
-
-
 class CreateSchemaView(TemplateView):
     template_name = 'dashboard-create.html'
 
-
-def my_view(request, *args, **kwargs):
-    user = request.user
-    if request.method == 'POST':
+    def post(self, request, *args, **kwargs):
+        user = request.user
         name = request.POST['name']
         keys = request.POST.getlist('dynamic-key[]')
         values = request.POST.getlist('dynamic-value[]')
         integer_values = request.POST.getlist('integer-value[]')
-        print(keys)
-        print(values)
-        print(integer_values)
         JSON_result = {}
         for i in range(len(keys)):
             if values[i] == 'integer':
@@ -53,8 +43,48 @@ def my_view(request, *args, **kwargs):
         model = Schemas(user_id=user.id, user_name=user, title=name, fields=JSON_result)
         model.save()
         return redirect("home", user)
-    else:
-        return render(request, 'dashboard-create.html', {'user_name': user})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_name'] = self.request.user
+        return context
+
+
+class EditSchemaView(TemplateView):
+    template_name = 'dashboard-edit.html'
+
+    def get_context_data(self, **kwargs):
+        id_schema = self.kwargs['id']
+        schema = Schemas.objects.get(id=id_schema)
+        data = schema.fields
+        context = {
+            'user_name': self.request.user,
+            'data_keys': json.dumps(list(data.keys())),
+            'data_values': json.dumps(list(data.values())),
+            'schema': schema
+        }
+        return context
+
+    def post(self, request, **kwargs):
+        user = request.user
+        name = request.POST['name']
+        keys = request.POST.getlist('dynamic-key[]')
+        values = request.POST.getlist('dynamic-value[]')
+        integer_values = request.POST.getlist('integer-value[]')
+        JSON_result = {}
+        for i in range(len(keys)):
+            if values[i] == 'integer':
+                JSON_result.update({keys[i]: integer_values})
+            else:
+                JSON_result.update({keys[i]: values[i]})
+        print(JSON_result)
+
+        schema_id = self.kwargs['id']
+        schema = get_object_or_404(Schemas, pk=schema_id, user_id=user.id)
+        schema.title = name
+        schema.fields = JSON_result
+        schema.save()
+        return redirect("home", user)
 
 
 def deleteSchema(request, *args, **kwargs):
@@ -64,3 +94,8 @@ def deleteSchema(request, *args, **kwargs):
     userSchema = Schemas.objects.filter(user_id=userId, id=schemaId)
     userSchema.delete()
     return redirect('home', request.user)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
