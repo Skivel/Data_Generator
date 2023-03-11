@@ -38,9 +38,16 @@ def my_view(request, *args, **kwargs):
         name = request.POST['name']
         keys = request.POST.getlist('dynamic-key[]')
         values = request.POST.getlist('dynamic-value[]')
+        integer_values = request.POST.getlist('integer-value[]')
         print(keys)
         print(values)
-        JSON_result = {keys[i]: values[i] for i in range(len(keys))}
+        print(integer_values)
+        JSON_result = {}
+        for i in range(len(keys)):
+            if values[i] == 'integer':
+                JSON_result.update({keys[i]: integer_values})
+            else:
+                JSON_result.update({keys[i]: values[i]})
         print(JSON_result)
 
         model = Schemas(user_id=user.id, user_name=user, title=name, fields=JSON_result)
