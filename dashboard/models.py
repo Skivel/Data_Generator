@@ -4,7 +4,6 @@ from django.db import models
 class Schemas(models.Model):
     user_id = models.BigIntegerField(verbose_name='User ID')
     user_name = models.CharField(max_length=255, verbose_name='User Name')
-    schema_id = models.BigAutoField
     title = models.CharField(max_length=255, verbose_name='Schema Title')
     separators = models.CharField(max_length=30, verbose_name='Column Separator', blank=True)
     character = models.CharField(max_length=30, verbose_name='String Character', blank=True)

@@ -69,10 +69,10 @@ function addField() {
 
   // Add default option to select field
   var option = document.createElement("option");
-  option.value = "string";
+  option.value = "full-name";
   option.disabled = false;
   option.selected = true;
-  option.label = "String";
+  option.label = "Full Name";
   select.appendChild(option);
 
   // Add other options to select field
@@ -82,18 +82,18 @@ function addField() {
   select.appendChild(option1);
 
   var option2 = document.createElement("option");
-  option2.value = "float";
-  option2.innerHTML = "Float";
+  option2.value = "email";
+  option2.innerHTML = "Email";
   select.appendChild(option2);
 
   var option3 = document.createElement("option");
-  option3.value = "bool";
-  option3.innerHTML = "Boolean";
+  option3.value = "phone";
+  option3.innerHTML = "Phone";
   select.appendChild(option3);
 
   var option4 = document.createElement("option");
-  option4.value = "date";
-  option4.innerHTML = "Date";
+  option4.value = "city";
+  option4.innerHTML = "City";
   select.appendChild(option4);
 
   // Add event listener to select field

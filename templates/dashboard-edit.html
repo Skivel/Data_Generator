@@ -124,13 +124,13 @@ function fields(i) {
   select.setAttribute("name", "dynamic-value[]");
   container_item_2.appendChild(select);
 
-  if (my_values[i] == 'string') {
+  if (my_values[i] == 'full-name') {
         // Add default option to select field
         var option = document.createElement("option");
-        option.value = "string";
+        option.value = "full-name";
         option.disabled = false;
         option.selected = true;
-        option.label = "String";
+        option.label = "Full Name";
         select.appendChild(option);
 
         // Add other options to select field
@@ -140,18 +140,18 @@ function fields(i) {
         select.appendChild(option1);
 
         var option2 = document.createElement("option");
-        option2.value = "float";
-        option2.innerHTML = "Float";
+        option2.value = "email";
+        option2.innerHTML = "Email";
         select.appendChild(option2);
 
         var option3 = document.createElement("option");
-        option3.value = "bool";
-        option3.innerHTML = "Boolean";
+        option3.value = "phone";
+        option3.innerHTML = "Phone";
         select.appendChild(option3);
 
         var option4 = document.createElement("option");
-        option4.value = "date";
-        option4.innerHTML = "Date";
+        option4.value = "city";
+        option4.innerHTML = "City";
         select.appendChild(option4);
   }
 
@@ -166,23 +166,23 @@ function fields(i) {
 
         // Add other options to select field
         var option1 = document.createElement("option");
-        option1.value = "string";
-        option1.innerHTML = "String";
+        option1.value = "full-name";
+        option1.innerHTML = "Full Name";
         select.appendChild(option1);
 
         var option2 = document.createElement("option");
-        option2.value = "float";
-        option2.innerHTML = "Float";
+        option2.value = "email";
+        option2.innerHTML = "Email";
         select.appendChild(option2);
 
         var option3 = document.createElement("option");
-        option3.value = "bool";
-        option3.innerHTML = "Boolean";
+        option3.value = "phone";
+        option3.innerHTML = "Phone";
         select.appendChild(option3);
 
         var option4 = document.createElement("option");
-        option4.value = "date";
-        option4.innerHTML = "Date";
+        option4.value = "city";
+        option4.innerHTML = "City";
         select.appendChild(option4);
 
         var container_item_3_1 = document.getElementById("item-3-1-" + tagId);
@@ -217,13 +217,13 @@ function fields(i) {
         container_item_3_2.appendChild(input1);
   }
 
-  else if (my_values[i] == 'float') {
+  else if (my_values[i] == 'email') {
         // Add default option to select field
         var option = document.createElement("option");
-        option.value = "float";
+        option.value = "email";
         option.disabled = false;
         option.selected = true;
-        option.label = "Float";
+        option.label = "Email";
         select.appendChild(option);
 
         // Add other options to select field
@@ -233,28 +233,28 @@ function fields(i) {
         select.appendChild(option1);
 
         var option2 = document.createElement("option");
-        option2.value = "string";
-        option2.innerHTML = "String";
+        option2.value = "full-name";
+        option2.innerHTML = "Full Name";
         select.appendChild(option2);
 
         var option3 = document.createElement("option");
-        option3.value = "bool";
-        option3.innerHTML = "Boolean";
+        option3.value = "phone";
+        option3.innerHTML = "Phone";
         select.appendChild(option3);
 
         var option4 = document.createElement("option");
-        option4.value = "date";
-        option4.innerHTML = "Date";
+        option4.value = "city";
+        option4.innerHTML = "City";
         select.appendChild(option4);
   }
 
-  else if (my_values[i] == 'bool') {
+  else if (my_values[i] == 'phone') {
         // Add default option to select field
         var option = document.createElement("option");
-        option.value = "bool";
+        option.value = "phone";
         option.disabled = false;
         option.selected = true;
-        option.label = "Boolean";
+        option.label = "Phone";
         select.appendChild(option);
 
         // Add other options to select field
@@ -264,28 +264,28 @@ function fields(i) {
         select.appendChild(option1);
 
         var option2 = document.createElement("option");
-        option2.value = "float";
-        option2.innerHTML = "Float";
+        option2.value = "email";
+        option2.innerHTML = "Email";
         select.appendChild(option2);
 
         var option3 = document.createElement("option");
-        option3.value = "string";
-        option3.innerHTML = "String";
+        option3.value = "full-name";
+        option3.innerHTML = "Full Name";
         select.appendChild(option3);
 
         var option4 = document.createElement("option");
-        option4.value = "date";
-        option4.innerHTML = "Date";
+        option4.value = "city";
+        option4.innerHTML = "City";
         select.appendChild(option4);
     }
 
   else {
         // Add default option to select field
         var option = document.createElement("option");
-        option.value = "date";
+        option.value = "city";
         option.disabled = false;
         option.selected = true;
-        option.label = "Date";
+        option.label = "City";
         select.appendChild(option);
 
         // Add other options to select field
@@ -295,18 +295,18 @@ function fields(i) {
         select.appendChild(option1);
 
         var option2 = document.createElement("option");
-        option2.value = "float";
-        option2.innerHTML = "Float";
+        option2.value = "phone";
+        option2.innerHTML = "Phone";
         select.appendChild(option2);
 
         var option3 = document.createElement("option");
-        option3.value = "bool";
-        option3.innerHTML = "Boolean";
+        option3.value = "email";
+        option3.innerHTML = "Email";
         select.appendChild(option3);
 
         var option4 = document.createElement("option");
-        option4.value = "string";
-        option4.innerHTML = "string";
+        option4.value = "full-name";
+        option4.innerHTML = "Full Name";
         select.appendChild(option4);
   }
 
@@ -409,10 +409,10 @@ function addField() {
 
   // Add default option to select field
   var option = document.createElement("option");
-  option.value = "string";
+  option.value = "full-name";
   option.disabled = false;
   option.selected = true;
-  option.label = "String";
+  option.label = "Full Name";
   select.appendChild(option);
 
   // Add other options to select field
@@ -422,18 +422,18 @@ function addField() {
   select.appendChild(option1);
 
   var option2 = document.createElement("option");
-  option2.value = "float";
-  option2.innerHTML = "Float";
+  option2.value = "email";
+  option2.innerHTML = "Email";
   select.appendChild(option2);
 
   var option3 = document.createElement("option");
-  option3.value = "bool";
-  option3.innerHTML = "Boolean";
+  option3.value = "phone";
+  option3.innerHTML = "Phone";
   select.appendChild(option3);
 
   var option4 = document.createElement("option");
-  option4.value = "date";
-  option4.innerHTML = "Date";
+  option4.value = "city";
+  option4.innerHTML = "City";
   select.appendChild(option4);
 
   // Add event listener to select field
