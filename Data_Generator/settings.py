@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users_login',
     'dashboard',
+    'generator'
 ]
 
 MIDDLEWARE = [

@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 import json
 
 from .models import Schemas
+from generator.models import FilesCSV
 
 
 @method_decorator(login_required, name='dispatch')
@@ -26,12 +27,14 @@ class DashboardView(TemplateView):
 class CreateSchemaView(TemplateView):
     template_name = 'dashboard-create.html'
 
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        name = request.POST['name']
-        keys = request.POST.getlist('dynamic-key[]')
-        values = request.POST.getlist('dynamic-value[]')
-        integer_values = request.POST.getlist('integer-value[]')
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        name = self.request.POST['name']
+        separators = self.request.POST['separators']
+        character = self.request.POST['character']
+        keys = self.request.POST.getlist('dynamic-key[]')
+        values = self.request.POST.getlist('dynamic-value[]')
+        integer_values = self.request.POST.getlist('integer-value[]')
         JSON_result = {}
         for i in range(len(keys)):
             if values[i] == 'integer':
@@ -40,7 +43,7 @@ class CreateSchemaView(TemplateView):
                 JSON_result.update({keys[i]: values[i]})
         print(JSON_result)
 
-        model = Schemas(user_id=user.id, user_name=user, title=name, fields=JSON_result)
+        model = Schemas(user_id=user.id, user_name=user, title=name, separators=separators, character=character, fields=JSON_result)
         model.save()
         return redirect("home", user)
 
@@ -87,12 +90,14 @@ class EditSchemaView(TemplateView):
         return redirect("home", user)
 
 
-def deleteSchema(request, *args, **kwargs):
+def deleteSchema(request, **kwargs):
     userId = request.user.id
     schemaId = kwargs["id"]
 
     userSchema = Schemas.objects.filter(user_id=userId, id=schemaId)
+    userSchemaDataSets = FilesCSV.objects.filter(user_id=userId, schema_id=schemaId)
     userSchema.delete()
+    userSchemaDataSets.delete()
     return redirect('home', request.user)
 
 

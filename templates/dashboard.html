@@ -34,7 +34,7 @@
                 {% for el in data %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
-                    <td><a href="" style="color:light-blue;">{{ el.title }}</a></td>
+                    <td><a href="{% url 'generator' user_name el.id %}" style="color:light-blue;">{{ el.title }}</a></td>
                     <td>{{ el.data_update|date:'Y-m-d' }}</td>
                     <td style="width:25%;"><a href="{% url 'edit' user_name el.id %}" style="color:light-blue;">Edit scheme</a><a href="{% url 'delete' user_name el.id %}" style="color:red; padding-left:15px;">Delete</a></td>
                 </tr>
