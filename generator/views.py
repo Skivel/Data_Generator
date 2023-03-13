@@ -2,6 +2,7 @@ import csv
 import random
 import time
 
+from django.conf import settings
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
@@ -16,6 +17,7 @@ class DataGenerator(TemplateView):
     template_name = "data-generate.html"
 
     def post(self, *args, **kwargs):
+        path = settings.BASE_DIR
         user_id = int(self.request.user.id)
         schema_id = int(kwargs['id'])
         num_rows = int(self.request.POST.get('rows'))
@@ -69,7 +71,7 @@ class DataGenerator(TemplateView):
 
         fake = Faker()
 
-        with open(f'media/csv/{schema.title}.csv', 'w', newline='') as csvfile:
+        with open(f'{path}\\media\\csv\\{schema.title}.csv', 'w', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=column_names, delimiter=sep, quotechar=char)
             writer.writeheader()
 
@@ -85,7 +87,7 @@ class DataGenerator(TemplateView):
         model = FilesCSV(filename=schema.title, user_id=user_id, schema_id=schema_id, rows=num_rows)
         model.save()
 
-        with open(f'media/csv/{schema.title}.csv', 'r') as csv_r:
+        with open(f'{path}\\media\\csv\\{schema.title}.csv', 'r') as csv_r:
             csv_result = csv_r.read()
         obj = get_object_or_404(FilesCSV, id=model.id)
         obj.status = True
