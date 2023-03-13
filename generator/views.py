@@ -1,5 +1,7 @@
 import csv
+import time
 
+from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
@@ -21,11 +23,31 @@ class DataGenerator(TemplateView):
         column_names = list(schema.fields.keys())
         column_types = list(schema.fields.values())
 
+        # Separators =
+        if schema.separators == 'comma':
+            sep = ','
+        elif schema.separators == 'semicolon':
+            sep = ';'
+        elif schema.separators == 'tab':
+            sep = '\t'
+        elif schema.separators == 'pipe':
+            sep = '|'
+        elif schema.separators == 'tilde':
+            sep = '~'
+        else:
+            sep = ' '
+
+        # String Character =
+        if schema.character == 'quote':
+            char = "'"
+        else:
+            char = '"'
+
         def generate_column_data(column_type):
             if column_type == 'full-name':
                 return fake.name()
             elif type(column_type) == list:
-                return str(fake.random_int(min=5, max=8))
+                return str(fake.random_int(min=int(column_type[0]), max=int(column_type[1])))
             elif column_type == 'email':
                 return fake.email()
             elif column_type == 'phone':
@@ -35,8 +57,8 @@ class DataGenerator(TemplateView):
 
         fake = Faker()
 
-        with open(f'{schema.title}.txt', 'w', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=column_names)
+        with open(f'media/csv/{schema.title}.csv', 'w', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=column_names, delimiter=sep, quotechar=char)
             writer.writeheader()
 
             for row_index in range(num_rows):
@@ -46,10 +68,17 @@ class DataGenerator(TemplateView):
                     column_data[column_name] = generate_column_data(column_type)
                 writer.writerow(column_data)
 
-        csvfile.close()
+            csvfile.close()
 
-        model = FilesCSV(user_id=user_id, schema_id=schema_id, rows=num_rows)
+        model = FilesCSV(filename=schema.title, user_id=user_id, schema_id=schema_id, rows=num_rows)
         model.save()
+
+        with open(f'media/csv/{schema.title}.csv', 'r') as csv_r:
+            csv_result = csv_r.read()
+        obj = get_object_or_404(FilesCSV, id=model.id)
+        obj.status = True
+        obj.file.save(f'{schema.title}.csv', ContentFile(csv_result))
+        obj.save()
 
         return redirect('generator', self.request.user, schema_id)
 
@@ -91,9 +120,9 @@ class DataGenerator(TemplateView):
         return context
 
 
-def downloadCSV(**kwargs):
+def downloadCSV(request, *args, **kwargs):
     file_id = kwargs['file_id']
     file = get_object_or_404(FilesCSV, id=file_id)
-    response = HttpResponse(file.file, content_type=file.content_type)
-    response['Content-Disposition'] = f'attachment; filename="{file.filename}"'
+    response = HttpResponse(file.file)
+    response['Content-Disposition'] = f'attachment; filename="{file.filename}.csv"'
     return response
