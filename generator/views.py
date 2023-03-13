@@ -65,7 +65,7 @@ class DataGenerator(TemplateView):
                 return str(fake.random_int(min=int(column_type[1]), max=int(column_type[2])))
             elif type(column_type) == list and column_type[0] == 'text':
                 randInt = random.randint(int(column_type[1]), int(column_type[2]))
-                return str(fake.text(max_nb_chars=10))
+                return fake.paragraph(nb_sentences=randInt)
             elif column_type == 'date':
                 return fake.date()
 
