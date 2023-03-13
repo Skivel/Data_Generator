@@ -69,7 +69,7 @@ function addField() {
 
   // Add default option to select field
   var option = document.createElement("option");
-  option.value = "full-name";
+  option.value = "name";
   option.disabled = false;
   option.selected = true;
   option.label = "Full Name";
@@ -77,8 +77,8 @@ function addField() {
 
   // Add other options to select field
   var option1 = document.createElement("option");
-  option1.value = "integer";
-  option1.innerHTML = "Integer";
+  option1.value = "job";
+  option1.innerHTML = "Job";
   select.appendChild(option1);
 
   var option2 = document.createElement("option");
@@ -87,22 +87,56 @@ function addField() {
   select.appendChild(option2);
 
   var option3 = document.createElement("option");
-  option3.value = "phone";
-  option3.innerHTML = "Phone";
+  option3.value = "domain-name";
+  option3.innerHTML = "Domain Name";
   select.appendChild(option3);
-
   var option4 = document.createElement("option");
-  option4.value = "city";
-  option4.innerHTML = "City";
+  option4.value = "phone";
+  option4.innerHTML = "Phone";
   select.appendChild(option4);
+  var option5 = document.createElement("option");
+  option5.value = "company";
+  option5.innerHTML = "Company";
+  select.appendChild(option5);
+  var option6 = document.createElement("option");
+  option6.value = "text";
+  option6.innerHTML = "Text";
+  select.appendChild(option6);
+  var option7 = document.createElement("option");
+  option7.value = "integer";
+  option7.innerHTML = "Integer";
+  select.appendChild(option7);
+  var option8 = document.createElement("option");
+  option8.value = "address";
+  option8.innerHTML = "Address";
+  select.appendChild(option8);
+  var option9 = document.createElement("option");
+  option9.value = "date";
+  option9.innerHTML = "Date";
+  select.appendChild(option9);
 
   // Add event listener to select field
   select.addEventListener("change", function() {
     if (this.value === "integer") {
-        thisInt(currentId);
+        try {
+          itsNotInt_orText(currentId);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          thisInt(currentId);
+        }
+    }
+    else if (this.value === 'text') {
+        try {
+          itsNotInt_orText(currentId);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          thisText(currentId);
+        }
     }
     else {
-        itsNotInt(currentId);
+        itsNotInt_orText(currentId);
     }
   });
 
@@ -139,11 +173,16 @@ function delField(id) {
   var br2 = document.getElementById("br-" + id);
   var br3 = document.getElementById("br-del-" + id);
   var select = document.getElementById("select-" + id);
-  var option = document.querySelector("#select-" + id + " option[value='string']");
-  var option1 = document.querySelector("#select-" + id + " option[value='integer']");
-  var option2 = document.querySelector("#select-" + id + " option[value='float']");
-  var option3 = document.querySelector("#select-" + id + " option[value='bool']");
-  var option4 = document.querySelector("#select-" + id + " option[value='date']");
+  var option = document.querySelector("#select-" + id + " option[value='name']");
+  var option1 = document.querySelector("#select-" + id + " option[value='job']");
+  var option2 = document.querySelector("#select-" + id + " option[value='email']");
+  var option3 = document.querySelector("#select-" + id + " option[value='domain-name']");
+  var option4 = document.querySelector("#select-" + id + " option[value='phone']");
+  var option5 = document.querySelector("#select-" + id + " option[value='company-name']");
+  var option6 = document.querySelector("#select-" + id + " option[value='text']");
+  var option7 = document.querySelector("#select-" + id + " option[value='integer']");
+  var option8 = document.querySelector("#select-" + id + " option[value='address']");
+  var option9 = document.querySelector("#select-" + id + " option[value='date']");
   var deleteBTN = document.getElementById("delete-" + id);
 
   container_item_1.parentNode.removeChild(container_item_1);
@@ -163,6 +202,10 @@ function delField(id) {
   option2.parentNode.removeChild(option2);
   option3.parentNode.removeChild(option3);
   option4.parentNode.removeChild(option4);
+  option5.parentNode.removeChild(option5);
+  option6.parentNode.removeChild(option6);
+  option7.parentNode.removeChild(option7);
+  option8.parentNode.removeChild(option8);
   deleteBTN.parentNode.removeChild(deleteBTN);
 }
 
@@ -197,7 +240,38 @@ function thisInt(id) {
     container_item_3_2.appendChild(input1);
 }
 
-function itsNotInt(id) {
+function thisText(id) {
+    var container_item_3_1 = document.getElementById("item-3-1-" + id);
+    var label3 = document.createElement("label");
+    label3.id = "int-1-" + id;
+    label3.innerHTML = "From";
+    container_item_3_1.appendChild(label3);
+
+    var input = document.createElement("input");
+    input.id = "int-field-1-" + id;
+    input.type = "number";
+    input.className = "form-control";
+    input.style.width = "70px";
+    input.setAttribute("name", "text-value[]");
+    container_item_3_1.appendChild(input);
+
+    var container_item_3_2 = document.getElementById("item-3-2-" + id);
+
+    var label4 = document.createElement("label");
+    label4.id = "int-2-" + id;
+    label4.innerHTML = "To";
+    container_item_3_2.appendChild(label4);
+
+    var input1 = document.createElement("input");
+    input1.id = "int-field-2-" + id;
+    input1.type = "number";
+    input1.className = "form-control";
+    input1.style.width = "70px";
+    input1.setAttribute("name", "text-value[]");
+    container_item_3_2.appendChild(input1);
+}
+
+function itsNotInt_orText(id) {
     var label3 = document.getElementById("int-1-" + id);
     var input = document.getElementById("int-field-1-" + id);
     var label4 = document.getElementById("int-2-" + id);
@@ -207,8 +281,6 @@ function itsNotInt(id) {
     input.parentNode.removeChild(input);
     label4.parentNode.removeChild(label4);
     input1.parentNode.removeChild(input1);
-
-
 }
 
 

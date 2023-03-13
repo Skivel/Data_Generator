@@ -35,13 +35,17 @@ class CreateSchemaView(TemplateView):
         keys = self.request.POST.getlist('dynamic-key[]')
         values = self.request.POST.getlist('dynamic-value[]')
         integer_values = self.request.POST.getlist('integer-value[]')
+        text_values = self.request.POST.getlist('text-value[]')
+        integer_values.insert(0, 'integer')
+        text_values.insert(0, 'text')
         JSON_result = {}
         for i in range(len(keys)):
             if values[i] == 'integer':
                 JSON_result.update({keys[i]: integer_values})
+            elif values[i] == 'text':
+                JSON_result.update({keys[i]: text_values})
             else:
                 JSON_result.update({keys[i]: values[i]})
-        print(JSON_result)
 
         model = Schemas(user_id=user.id, user_name=user, title=name, separators=separators, character=character, fields=JSON_result)
         model.save()
@@ -76,13 +80,17 @@ class EditSchemaView(TemplateView):
         keys = request.POST.getlist('dynamic-key[]')
         values = request.POST.getlist('dynamic-value[]')
         integer_values = request.POST.getlist('integer-value[]')
+        text_values = request.POST.getlist('text-value[]')
+        integer_values.insert(0, 'integer')
+        text_values.insert(0, 'text')
         JSON_result = {}
         for i in range(len(keys)):
             if values[i] == 'integer':
                 JSON_result.update({keys[i]: integer_values})
+            elif values[i] == 'text':
+                JSON_result.update({keys[i]: text_values})
             else:
                 JSON_result.update({keys[i]: values[i]})
-        print(JSON_result)
 
         schema_id = self.kwargs['id']
         schema = get_object_or_404(Schemas, id=schema_id, user_id=user.id)

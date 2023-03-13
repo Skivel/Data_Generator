@@ -1,4 +1,5 @@
 import csv
+import random
 import time
 
 from django.core.files.base import ContentFile
@@ -44,16 +45,27 @@ class DataGenerator(TemplateView):
             char = '"'
 
         def generate_column_data(column_type):
-            if column_type == 'full-name':
+            if column_type == 'name':
                 return fake.name()
-            elif type(column_type) == list:
-                return str(fake.random_int(min=int(column_type[0]), max=int(column_type[1])))
+            elif column_type == 'job':
+                return fake.job()
             elif column_type == 'email':
                 return fake.email()
+            elif column_type == 'domain-name':
+                return fake.domain_name()
             elif column_type == 'phone':
                 return fake.phone_number()
-            elif column_type == 'city':
-                return fake.city()
+            elif column_type == 'company':
+                return fake.company()
+            elif column_type == 'address':
+                return fake.address()
+            elif type(column_type) == list and column_type[0] == 'integer':
+                return str(fake.random_int(min=int(column_type[1]), max=int(column_type[2])))
+            elif type(column_type) == list and column_type[0] == 'text':
+                randInt = random.randint(int(column_type[1]), int(column_type[2]))
+                return str(fake.text(max_nb_chars=10))
+            elif column_type == 'date':
+                return fake.date()
 
         fake = Faker()
 
@@ -77,8 +89,10 @@ class DataGenerator(TemplateView):
             csv_result = csv_r.read()
         obj = get_object_or_404(FilesCSV, id=model.id)
         obj.status = True
-        obj.file.save(f'{schema.title}.csv', ContentFile(csv_result))
+        obj.file.save(f'{schema.title}_{model.id}.csv', ContentFile(csv_result))
         obj.save()
+
+        time.sleep(1)
 
         return redirect('generator', self.request.user, schema_id)
 
@@ -90,11 +104,26 @@ class DataGenerator(TemplateView):
         dict_values = list(schema.fields.values())
         dict_arr = {}
         for i, value in enumerate(dict_values):
-            if dict_values[i] == 'full-name':
+            if dict_values[i] == 'name':
                 dict_values[i] = "Full Name"
 
-            if type(dict_values[i]) == list:
+            if dict_values[i] == 'job':
+                dict_values[i] = 'Job'
+
+            if dict_values[i] == 'domain-name':
+                dict_values[i] = 'Domain Name'
+
+            if dict_values[i] == 'company':
+                dict_values[i] = 'Company'
+
+            if dict_values[i] == 'address':
+                dict_values[i] = 'Address'
+
+            if type(dict_values[i]) == list and dict_values[i][0] == 'integer':
                 dict_values[i] = "Integer"
+
+            if type(dict_values[i]) == list and dict_values[i][0] == 'text':
+                dict_values[i] = "Text"
 
             if dict_values[i] == 'email':
                 dict_values[i] = 'Email'
@@ -102,8 +131,8 @@ class DataGenerator(TemplateView):
             if dict_values[i] == 'phone':
                 dict_values[i] = 'Phone'
 
-            if dict_values[i] == 'city':
-                dict_values[i] = 'City'
+            if dict_values[i] == 'date':
+                dict_values[i] = 'Date'
 
         for i in range(len(dict_keys)):
             dict_arr.update({dict_keys[i]: dict_values[i]})
