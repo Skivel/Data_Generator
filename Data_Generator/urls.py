@@ -15,7 +15,7 @@ urlpatterns = [
     path('<user_name>/create', CreateSchemaView.as_view(), name='create'),
     path('<user_name>/edit-schema/<id>', EditSchemaView.as_view(), name='edit'),
     path('<user_name>/generator/<id>', DataGenerator.as_view(), name='generator'),
-    path('<user_name>/download/<id>/<file_id>', downloadCSV, name='download'),
+    path('<user_name>/download/<file_id>', downloadCSV, name='download'),
     path('<user_name>/delete/<id>', deleteSchema, name='delete'),
 ] \
               + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \

@@ -71,6 +71,8 @@ class EditSchemaView(TemplateView):
     def post(self, request, **kwargs):
         user = request.user
         name = request.POST['name']
+        separators = request.POST['separators']
+        character = request.POST['character']
         keys = request.POST.getlist('dynamic-key[]')
         values = request.POST.getlist('dynamic-value[]')
         integer_values = request.POST.getlist('integer-value[]')
@@ -83,8 +85,10 @@ class EditSchemaView(TemplateView):
         print(JSON_result)
 
         schema_id = self.kwargs['id']
-        schema = get_object_or_404(Schemas, pk=schema_id, user_id=user.id)
+        schema = get_object_or_404(Schemas, id=schema_id, user_id=user.id)
         schema.title = name
+        schema.separators = separators
+        schema.character = character
         schema.fields = JSON_result
         schema.save()
         return redirect("home", user)

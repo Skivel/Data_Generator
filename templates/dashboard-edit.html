@@ -28,15 +28,75 @@
         <input type="text" name="name" id="name" class="form-control" style="width:200px"
                value="{{ schema.title }}"><br>
         <label for="name" class="label">Column separator</label><br>
+        {% if schema.separators == 'comma' %}
         <select name="separators" id="separators" class="custom-select" style="width:200px">
             <option value="comma" label='Comma (,)'></option>
-            <option value="dot-comma">Dot&comma (;)</option>
-        </select><br><br>
+            <option value="semicolon">Semicolon (;)</option>
+            <option value="tab">Tab (\t)</option>
+            <option value="pipe">Pipe (|)</option>
+            <option value="tilde">Tilde (~)</option>
+            <option value="space">Space ( )</option>
+        </select>
+        {% elif schema.separators == 'semicolon' %}
+        <select name="separators" id="separators" class="custom-select" style="width:200px">
+            <option value="semicolon" label='Semicolon (;)'></option>
+            <option value="comma">Comma (,)</option>
+            <option value="tab">Tab (\t)</option>
+            <option value="pipe">Pipe (|)</option>
+            <option value="tilde">Tilde (~)</option>
+            <option value="space">Space ( )</option>
+        </select>
+        {% elif schema.separators == 'tab' %}
+        <select name="separators" id="separators" class="custom-select" style="width:200px">
+            <option value="tab" label='Tab (\t)'></option>
+            <option value="comma">Comma (,)</option>
+            <option value="semicolon">Semicolon (;)</option>
+            <option value="pipe">Pipe (|)</option>
+            <option value="tilde">Tilde (~)</option>
+            <option value="space">Space ( )</option>
+        </select>
+        {% elif schema.separators == 'pipe' %}
+        <select name="separators" id="separators" class="custom-select" style="width:200px">
+            <option value="pipe" label='Pipe (|)'></option>
+            <option value="comma">Comma (,)</option>
+            <option value="tab">Tab (\t)</option>
+            <option value="semicolon">Semicolon (;)</option>
+            <option value="tilde">Tilde (~)</option>
+            <option value="space">Space ( )</option>
+        </select>
+        {% elif schema.separators == 'tilde' %}
+        <select name="separators" id="separators" class="custom-select" style="width:200px">
+            <option value="tilde" label='Tilde (~)'></option>
+            <option value="comma">Comma (,)</option>
+            <option value="tab">Tab (\t)</option>
+            <option value="pipe">Pipe (|)</option>
+            <option value="semicolon">Semicolon (;)</option>
+            <option value="space">Space ( )</option>
+        </select>
+        {% else %}
+        <select name="separators" id="separators" class="custom-select" style="width:200px">
+            <option value="space" label='Space ( )'></option>
+            <option value="comma">Comma (,)</option>
+            <option value="tab">Tab (\t)</option>
+            <option value="pipe">Pipe (|)</option>
+            <option value="tilde">Tilde (~)</option>
+            <option value="semicolon">Semicolon (;)</option>
+        </select>
+        {% endif %}
+        <br><br>
         <label for="name" class="label">String character</label><br>
+        {% if schema.character == 'double-quote' %}
         <select name="character" id="character" class="custom-select" style="width:200px">
             <option value="double-quote" label='Double-quote (")'></option>
             <option value="quote">Quote (')</option>
-        </select><br><br>
+        </select>
+        {% else %}
+        <select name="character" id="character" class="custom-select" style="width:200px">
+            <option value="quote" label="Quote (')"></option>
+            <option value="double-quote">Double-quote (")</option>
+        </select>
+        {% endif %}
+        <br><br>
         <div class="title" style="padding:15px;">Fields</div>
         <div id="fields-container" class="form-row">
             <!-- Dynamic fields will be added here -->
