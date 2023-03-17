@@ -1,6 +1,5 @@
 import csv
 import random
-import time
 
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -70,8 +69,10 @@ class DataGenerator(TemplateView):
                 return fake.date()
 
         fake = Faker()
+        model = FilesCSV(filename=schema.title, user_id=user_id, schema_id=schema_id, rows=num_rows)
+        model.save()
 
-        with open(f'{path}\\media\\csv\\{schema.title}.csv', 'w', newline='') as csvfile:
+        with open(f'{path}\\media\\csv\\{schema.title}_{schema_id}.csv', 'w', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=column_names, delimiter=sep, quotechar=char)
             writer.writeheader()
 
@@ -84,17 +85,12 @@ class DataGenerator(TemplateView):
 
             csvfile.close()
 
-        model = FilesCSV(filename=schema.title, user_id=user_id, schema_id=schema_id, rows=num_rows)
-        model.save()
-
-        with open(f'{path}\\media\\csv\\{schema.title}.csv', 'r') as csv_r:
+        with open(f'{path}\\media\\csv\\{schema.title}_{schema_id}.csv', 'r') as csv_r:
             csv_result = csv_r.read()
         obj = get_object_or_404(FilesCSV, id=model.id)
         obj.status = True
         obj.file.save(f'{schema.title}_{model.id}.csv', ContentFile(csv_result))
         obj.save()
-
-        time.sleep(1)
 
         return redirect('generator', self.request.user, schema_id)
 

@@ -1,3 +1,6 @@
+import os
+
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import redirect, get_object_or_404
@@ -105,9 +108,14 @@ class EditSchemaView(TemplateView):
 def deleteSchema(request, **kwargs):
     userId = request.user.id
     schemaId = kwargs["id"]
+    source_root = settings.BASE_DIR
 
-    userSchema = Schemas.objects.filter(user_id=userId, id=schemaId)
+    userSchema = Schemas.objects.get(user_id=userId, id=schemaId)
     userSchemaDataSets = FilesCSV.objects.filter(user_id=userId, schema_id=schemaId)
+    path = f'{source_root}/media/csv/{userSchema}_{schemaId}.csv'
+    os.remove(path)
+    for i in range(len(userSchemaDataSets)):
+        userSchemaDataSets[i].file.delete()
     userSchema.delete()
     userSchemaDataSets.delete()
     return redirect('home', request.user)
