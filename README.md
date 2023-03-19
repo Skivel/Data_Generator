@@ -1,6 +1,4 @@
-# Data_Generator
-
-To test this project [click here!](https://skivel.pythonanywhere.com/)
+# To test this project [click here!](https://skivel.pythonanywhere.com/)
 
 Login: testUser
 
