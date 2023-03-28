@@ -1,4 +1,4 @@
-# Data Generator
+# Data Generator with Python Django
 
 Web project where you can generate csv file, with fake data.
 
