@@ -6,9 +6,9 @@ Web project where you can generate csv file, with fake data.
 
 ![alt text](https://github.com/Skivel/Data_Generator/blob/master/README%20IMG/1.png)
 
-Login: testUser
+Login: skivel
 
-Password: user
+Password: root
 
 ![alt text](https://github.com/Skivel/Data_Generator/blob/master/README%20IMG/2.png)
 
