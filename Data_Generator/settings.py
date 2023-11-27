@@ -1,5 +1,5 @@
 import os
-import json
+from json import loads
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
 
@@ -12,7 +12,7 @@ SECRET_KEY = os.getenv('KEY')
 
 DEBUG = False
 
-ALLOWED_HOSTS = json.loads(os.getenv('ALLOWED_HOSTS'))
+ALLOWED_HOSTS = loads(os.getenv('ALLOWED_HOSTS'))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
